@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?404650e686d654af584eb87980ddf40f"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>git撤回已提交到远程的commit信息 | hlongc(前端)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="git">
+    <meta name="description" content="场景：不小心把本地调试的代码推送到了远程，现在需要撤回本次commit(红色框)                                                                                                             查看提交的日志信息123git reflogeab78c1 (HEAD -&gt; master, o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git撤回已提交到远程的commit信息">
+<meta property="og:url" content="https://github.com/hlongc/2021/08/31/git-reset/index.html">
+<meta property="og:site_name" content="hlongc(前端)">
+<meta property="og:description" content="场景：不小心把本地调试的代码推送到了远程，现在需要撤回本次commit(红色框)                                                                                                             查看提交的日志信息123git reflogeab78c1 (HEAD -&gt; master, o">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/images/git-reset/remote.jpg">
+<meta property="og:image" content="https://github.com/images/git-reset/reject.jpg">
+<meta property="og:image" content="https://github.com/images/git-reset/force.jpg">
+<meta property="article:published_time" content="2021-08-31T05:55:24.000Z">
+<meta property="article:modified_time" content="2022-01-04T13:36:15.553Z">
+<meta property="article:author" content="hlongc">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/images/git-reset/remote.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="hlongc(前端)" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.png">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">hlongc</h5>
+          <a href="mailto:609442724@qq.com" title="609442724@qq.com" class="mail">609442724@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hlongc" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">git撤回已提交到远程的commit信息</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">git撤回已提交到远程的commit信息</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-08-31T05:55:24.000Z" itemprop="datePublished" class="page-time">
+  2021-08-31
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查看提交的日志信息"><span class="post-toc-number">1.</span> <span class="post-toc-text">查看提交的日志信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通过hash值在本地进行回退"><span class="post-toc-number">2.</span> <span class="post-toc-text">通过hash值在本地进行回退</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#把撤回以后的结果推送到远程"><span class="post-toc-number">3.</span> <span class="post-toc-text">把撤回以后的结果推送到远程</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-git-reset"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">git撤回已提交到远程的commit信息</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-08-31 13:55:24" datetime="2021-08-31T05:55:24.000Z"  itemprop="datePublished">2021-08-31</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>场景：不小心把本地调试的代码推送到了远程，现在需要撤回本次commit(红色框)</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/git-reset/remote.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<h3 id="查看提交的日志信息"><a href="#查看提交的日志信息" class="headerlink" title="查看提交的日志信息"></a>查看提交的日志信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br><span class="line">eab78c1 (HEAD -&gt; master, origin/master) HEAD@&#123;0&#125;: commit: feat: add foo.txt</span><br><span class="line">2ea574d HEAD@&#123;1&#125;: commit (initial): feat: add readme.md</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>eab78c1</code>就是我们要撤回的版本信</p>
+<h3 id="通过hash值在本地进行回退"><a href="#通过hash值在本地进行回退" class="headerlink" title="通过hash值在本地进行回退"></a>通过hash值在本地进行回退</h3><p>通过<code>git reset</code>命令进行回退，该命令后面可以跟参数</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">–soft</td>
+<td align="left">不删除工作空间的改动代码 ，撤销commit，不撤销git add file</td>
+</tr>
+<tr>
+<td align="left">–hard</td>
+<td align="left">删除工作空间的改动代码，撤销commit且撤销add</td>
+</tr>
+</tbody></table>
+<p>由于我不再需要调试的代码，直接使用<code>--hard</code>选项，并且跟上撤回到指定版本的hash值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 2ea574d</span><br><span class="line">HEAD is now at 2ea574d feat: add readme.md</span><br></pre></td></tr></table></figure>
+
+<p>撤回成功以后，再通过<code>git log</code>查看当前的提交日志，可以看到已经回到了第一次提交的状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br><span class="line">commit 2ea574df7af093c927adcdb1a98151e8b8a5ff7f (HEAD -&gt; master)</span><br><span class="line">Author: </span><br><span class="line">Date:   Tue Aug 31 15:04:55 2021 +0800</span><br><span class="line"></span><br><span class="line">    feat: add readme.md</span><br></pre></td></tr></table></figure>
+
+<h3 id="把撤回以后的结果推送到远程"><a href="#把撤回以后的结果推送到远程" class="headerlink" title="把撤回以后的结果推送到远程"></a>把撤回以后的结果推送到远程</h3><p>如果通过<code>git push origin master</code>推送到远程仓库，会出现报错，因为远程仓库和本地版本不一致</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/git-reset/reject.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>此时可以通过参数<code>--force</code>进行强制覆盖</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/git-reset/force.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>最后查看远程仓库的commit信息，可以看到已经回退成功。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2022-01-04T13:36:15.553Z" itemprop="dateUpdated">2022-01-04 21:36:15</time>
+</span><br>
+
+
+        
+        感谢阅读，欢迎打赏
+        
+    </div>
+    
+    <footer>
+        <a href="https://github.com/hlongc">
+            <img src="/img/avatar.png" alt="hlongc">
+            hlongc
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/hlongc/2021/08/31/git-reset/&title=《git撤回已提交到远程的commit信息》 — hlongc(前端)&pic=https://github.com/hlongc/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/hlongc/2021/08/31/git-reset/&title=《git撤回已提交到远程的commit信息》 — hlongc(前端)&source=个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/hlongc/2021/08/31/git-reset/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《git撤回已提交到远程的commit信息》 — hlongc(前端)&url=https://github.com/hlongc/2021/08/31/git-reset/&via=https://github.com/hlongc" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/hlongc/2021/08/31/git-reset/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2021/09/01/3sum/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">三数之和</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/08/31/hello-world/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Hello World</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: 'bd3425967913899b4ec5',
+          clientSecret: 'e19383ebe4884ccadd24ee6a289a03567492ef9d',
+          repo: 'https://github.com/hlongc/hlongc.github.io',
+          owner: 'hlongc',
+          admin: ['hlongc'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢打赏~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpeg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpeg" data-alipay="/img/alipay.jpeg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>hlongc &copy; 2015 - 2022</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/hlongc/2021/08/31/git-reset/&title=《git撤回已提交到远程的commit信息》 — hlongc(前端)&pic=https://github.com/hlongc/img/avatar.png" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/hlongc/2021/08/31/git-reset/&title=《git撤回已提交到远程的commit信息》 — hlongc(前端)&source=个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/hlongc/2021/08/31/git-reset/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《git撤回已提交到远程的commit信息》 — hlongc(前端)&url=https://github.com/hlongc/2021/08/31/git-reset/&via=https://github.com/hlongc" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/hlongc/2021/08/31/git-reset/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3awbKCMAwFUP//p3lbFw+5t0VnaE9XjKLlsMgkTV6veB1v6+zz92/PPj/758+73LYwMDAeyzg+rvZxPz/W/Os4pWJgYGzASEJhe3+0fcD4vBcGBgZGe92G1/lXhoGBgXF2Tx5M8wL1pwEXAwPjgYykHE22TP7hCNYXa3EMDIwHMvJT999ff6W/gYGB8SjGUa689Zg3JvOk8/SpMDAwlmbkAW4smRtrG7TPg4GBsTajPbLPD+naB8pfwT+fYGBgbMNIQuR86ZuH46JdioGBsTRjLHVrU8C8nZC3PDEwMPZhtIdrY0F5fjgsqsIxMDA2YLSH8m17oB3IKIpqDAyMbRh5yVpnnRNtzijEY2BgLM0YG25owUlQTtLHCzYGBsbSjCRpy8Nf3trM2xJ5WMfAwFibkbcH7v3VWII41TvFwMB4LCM/lM83yI/+bwvuGBgYGzDGxinaQY2xxLSYGcHAwFiI0Y5WfG9EY6YYxsDAWJtx1zhXktLdFb4vRi4wMDA2YLQHau0DtU2IetgCAwNjacbYAETbYHiVKx/swMDA2IExH2RnjvVz5MW0CAYGxnKMo1xtaVofmbWFKwYGxgaMNkUbG5tog2y+y+DUGwYGxgMZSZCduR5LN+v3jYGBsQHj3vjdxvif1uIYGBgbMMaK1bx52SajGBgYGHlAHGtt5gdwF3thYGBswEiK2Pye/Fdt4xMDA2NPRls6zjQJ8qO0JBxjYGBswPgDXXHRP/hU0ZYAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '你快回来';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

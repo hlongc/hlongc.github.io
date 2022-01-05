@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>hlongc(前端)</title>
+  <icon>https://www.gravatar.com/avatar/4a28f1d414c7c5fecf8a439bf27be8d5</icon>
+  
+  <link href="https://github.com/hlongc/atom.xml" rel="self"/>
+  
+  <link href="https://github.com/hlongc/"/>
+  <updated>2022-01-04T13:36:15.553Z</updated>
+  <id>https://github.com/hlongc/</id>
+  
+  <author>
+    <name>hlongc</name>
+    <email>hulc_it@163.com</email>
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>三数之和</title>
+    <link href="https://github.com/hlongc/2021/09/01/3sum/"/>
+    <id>https://github.com/hlongc/2021/09/01/3sum/</id>
+    <published>2021-09-01T15:07:01.000Z</published>
+    <updated>2022-01-04T13:36:15.553Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://leetcode-cn.com/problems/3sum/" target="_blank">原题链接</a></p><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给你一个包含 n 个整数的数组 <code>nums</code>，判断 <code>nums</code> 中是否存在三个元素 a，b，c ，使得 a + b + c = <code>0</code> ？请你找出所有和为 <code>0</code> 且不重复的三元组。</p><p>注意：答案中不可以包含重复的三元组。</p><blockquote><p>示例 1：<br>输入：nums = [-1,0,1,2,-1,-4]<br>输出：[[-1,-1,2],[-1,0,1]]</p></blockquote><blockquote><p>示例 2：<br>输入：nums = []<br>输出：[]</p></blockquote><blockquote><p>示例 3：<br>输入：nums = [0]<br>输出：[]</p></blockquote><h3 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h3><p>需要在数组中找到三个元素和为<code>0</code>的组合，并且是<code>不重复</code>的三元组，如果不存在则返回空数组，那我们可以对数组进行升序，升序有两个好处:</p><ol><li>方便跳过重复元素(因为寻找的是不重复的三元组)，因为相同的元素都是贴在一起的</li><li>当正在遍历的元素大于0时，那就可以停止遍历了，说明后续的元素都是大于0，已经不符合题意</li></ol><p>在排序完成以后，依次遍历每个元素，假设当前遍历元素为<code>nums[i]</code>，那需要在剩下的右侧元素中找出其余两个元素，对此可以使用双指针进行遍历<code>left = i + 1, right = length - 1</code>，判断<code>num[i] + nums[left] + nums[right] = 0</code>是否满足，如果满足则找到一组，然后根据情况移动双指针。</p><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;number[]&#125;</span> <span class="variable">nums</span></span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;number[][]&#125;</span></span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> threeSum = <span class="function"><span class="keyword">function</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line">    nums.sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a - b) <span class="comment">// 进行升序，方便跳过重复元素</span></span><br><span class="line">    <span class="keyword">const</span> ret = [], len = nums.length</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len - <span class="number">2</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] &gt; <span class="number">0</span>) <span class="keyword">break</span> <span class="comment">// 当前元素已经大于0，不满足条件</span></span><br><span class="line">        <span class="comment">// 跳过重复元素,可以避免这种情况发生[-1, -1, 0, 1],如果不跳过第二次的-1，那么会有两个重复的结果[[-1, 0, 1], [-1, 0, 1]]不满足题意</span></span><br><span class="line">        <span class="keyword">if</span> (nums[i] === nums[i - <span class="number">1</span>]) <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">const</span> target = -nums[i]</span><br><span class="line">        <span class="keyword">let</span> left = i + <span class="number">1</span>, right = len - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">            <span class="keyword">const</span> sum = nums[left] + nums[right]</span><br><span class="line">            <span class="keyword">if</span> (sum === target) &#123;</span><br><span class="line">                ret.push([nums[i], nums[left], nums[right]])</span><br><span class="line">                <span class="keyword">while</span>(left &lt; right &amp;&amp; nums[left] === nums[left + <span class="number">1</span>]) left++ <span class="comment">// 跳过相同元素，避免结果重复，下面同理</span></span><br><span class="line">                <span class="keyword">while</span>(left &lt; right &amp;&amp; nums[right] === nums[right - <span class="number">1</span>]) right--</span><br><span class="line">                left++</span><br><span class="line">                right--</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 当前值大于目标值说明过大，移动右指针，反之移动左指针</span></span><br><span class="line">                sum &gt; target ? right-- : left++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://leetcode-cn.com/problems/3sum/&quot; target=&quot;_blank&quot;&gt;原题链接&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;题目描述&quot;&gt;&lt;a href=&quot;#题目描述&quot; class=&quot;headerlink&quot; title=&quot;题目描</summary>
+      
+    
+    
+    
+    <category term="算法" scheme="https://github.com/hlongc/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="https://github.com/hlongc/tags/%E7%AE%97%E6%B3%95/"/>
+    
+    <category term="二分查找" scheme="https://github.com/hlongc/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>git撤回已提交到远程的commit信息</title>
+    <link href="https://github.com/hlongc/2021/08/31/git-reset/"/>
+    <id>https://github.com/hlongc/2021/08/31/git-reset/</id>
+    <published>2021-08-31T05:55:24.000Z</published>
+    <updated>2022-01-04T13:36:15.553Z</updated>
+    
+    <content type="html"><![CDATA[<p>场景：不小心把本地调试的代码推送到了远程，现在需要撤回本次commit(红色框)</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/git-reset/remote.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><h3 id="查看提交的日志信息"><a href="#查看提交的日志信息" class="headerlink" title="查看提交的日志信息"></a>查看提交的日志信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br><span class="line">eab78c1 (HEAD -&gt; master, origin/master) HEAD@&#123;0&#125;: commit: feat: add foo.txt</span><br><span class="line">2ea574d HEAD@&#123;1&#125;: commit (initial): feat: add readme.md</span><br></pre></td></tr></table></figure><p>可以看到<code>eab78c1</code>就是我们要撤回的版本信</p><h3 id="通过hash值在本地进行回退"><a href="#通过hash值在本地进行回退" class="headerlink" title="通过hash值在本地进行回退"></a>通过hash值在本地进行回退</h3><p>通过<code>git reset</code>命令进行回退，该命令后面可以跟参数</p><table><thead><tr><th align="left">参数</th><th align="left">含义</th></tr></thead><tbody><tr><td align="left">–soft</td><td align="left">不删除工作空间的改动代码 ，撤销commit，不撤销git add file</td></tr><tr><td align="left">–hard</td><td align="left">删除工作空间的改动代码，撤销commit且撤销add</td></tr></tbody></table><p>由于我不再需要调试的代码，直接使用<code>--hard</code>选项，并且跟上撤回到指定版本的hash值</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 2ea574d</span><br><span class="line">HEAD is now at 2ea574d feat: add readme.md</span><br></pre></td></tr></table></figure><p>撤回成功以后，再通过<code>git log</code>查看当前的提交日志，可以看到已经回到了第一次提交的状态</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span></span><br><span class="line">commit 2ea574df7af093c927adcdb1a98151e8b8a5ff7f (HEAD -&gt; master)</span><br><span class="line">Author: </span><br><span class="line">Date:   Tue Aug 31 15:04:55 2021 +0800</span><br><span class="line"></span><br><span class="line">    feat: add readme.md</span><br></pre></td></tr></table></figure><h3 id="把撤回以后的结果推送到远程"><a href="#把撤回以后的结果推送到远程" class="headerlink" title="把撤回以后的结果推送到远程"></a>把撤回以后的结果推送到远程</h3><p>如果通过<code>git push origin master</code>推送到远程仓库，会出现报错，因为远程仓库和本地版本不一致</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/git-reset/reject.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>此时可以通过参数<code>--force</code>进行强制覆盖</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/git-reset/force.jpg" alt="" title="">                </div>                <div class="image-caption"></div>            </figure><p>最后查看远程仓库的commit信息，可以看到已经回退成功。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;场景：不小心把本地调试的代码推送到了远程，现在需要撤回本次commit(红色框)&lt;/p&gt;
+&lt;figure class=&quot;image-bubble&quot;&gt;
+                &lt;div class=&quot;img-lightbox&quot;&gt;
+                   </summary>
+      
+    
+    
+    
+    
+    <category term="git" scheme="https://github.com/hlongc/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://github.com/hlongc/2021/08/31/hello-world/"/>
+    <id>https://github.com/hlongc/2021/08/31/hello-world/</id>
+    <published>2021-08-31T05:45:21.417Z</published>
+    <updated>2021-08-31T05:45:21.417Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
